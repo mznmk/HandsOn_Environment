@@ -18,6 +18,8 @@ Learn the core fundamentals of Docker by building a Node/Express app with a Mong
 
 ### 0:00:14 Intro & demo express app  
 
+[part1-1](./part1-1/)  
+
 ✅ 受講完了: 1回  
 
 - expressをインストールする  
@@ -152,6 +154,8 @@ Learn the core fundamentals of Docker by building a Node/Express app with a Mong
 
 ### 1:04:01 Docker Compose  
 
+[part1-2](./part1-2/)  
+
 ✅ 受講完了: 1回  
 
 - `image`をビルドして`container`を起動する  
@@ -185,6 +189,8 @@ Learn the core fundamentals of Docker by building a Node/Express app with a Mong
 
 
 ### 1:44:47 Adding a Mongo Container
+
+[part2](./part2/)  
 
 ✅ 受講完了: 1回  
 
@@ -259,7 +265,7 @@ Learn the core fundamentals of Docker by building a Node/Express app with a Mong
 	```sh
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --no-deps node-app
 	```
-- `mongo`を起動するとエラーが怒らないことを確認する  
+- `mongo`を起動するとエラーが起こらないことを確認する  
 	```sh
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d mongo
 	```
@@ -349,34 +355,132 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale nod
 
 ### 3:57:44 Installing docker on Ubuntu(Digital Ocean)
 
-✓ 受講途中:  
+[part3-1](./part3-1/)  
+
+✅ 受講完了: 1回  
+
+- `docker`をインストールする  
+	```sh
+	# https://docs.docker.com/engine/install/ubuntu/
+	# https://get.docker.com/
+	curl -fsSL https://get.docker.com -o get-docker.sh
+	sh get-docker.sh
+	docker --version
+	```
+- `docker-compose`をインストールする  
+	```sh
+	# https://github.com/docker/compose/releases
+	sudo curl -L https://github.com/docker/compose/releases/download/2.6.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+	sudo chmod +x /usr/local/bin/docker-compose
+	docker-compose --version
+	```
 
 
 ### 4:03:21 Setup Git
 
+✅ 受講完了: 1回  
+
+- GitHubにリポジトリーを作成しリモートでアクセスできるようにしておく  
+
 
 ### 4:05:37 Environment Variables on Ubuntu
+
+✅ 受講完了: 1回  
+
+- `docker-compose.yml` `docker-compose.prod.yml` ファイルを整える  
+- パスワード等は`.env`ファイルにまとめておきシステム起動時に`.bashrc`から読み込むように設定する  
+	```sh
+	# .bashrc
+	source .env
+	```
 
 
 ### 4:14:12 Deploying app to production server
 
+✅ 受講完了: 1回  
+
+- ローカルからGitHubリポジトリーにプッシュする  
+- サーバーから`git pull`でプルしてくる  
+- コンテナを起動する  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+	```
+
 
 ### 4:18:57 Pushing changes the hard way
+
+✅ 受講完了: 1回  
+
+- ローカルから変更をGitHubリポジトリーにプッシュする  
+- サーバーから`git pull`でプルしてくる  
+- コンテナを起動して変更を反映させる(downしなくていける)  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+	```
+- 限定した変更の反映も可能  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build --no-deps node-app
+	```
 
 
 ### 4:25:58 Rebuilding Containers
 
+✅ 受講完了: 1回  
+
+- コンテナを再構築する  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate --no-deps node-app
+	```
+
 
 ### 4:27:32 Dev to Prod workflow review
+
+✅ 受講完了: 1回  
 
 
 ### 4:30:50 Improved Dockerhub workflow
 
+[part3-2](./part3-2/)  
+
+✅ 受講完了: 1回  
+
+- DockerHubのリポジトリーにプッシュする  
+	```sh
+	docker image tag part3_node-app mznmk/node-app
+	docker push mznmk/node-app
+	```
+- `node-app`イメージをプルするよう`docker-compose.yml`の設定を変更する  
+- コンテナを再構築する  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+	```
+- 限定した変更の反映も可能  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml build node-app
+	```
+- DockerHubのリポジトリーにプッシュ可能  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+	```
+- DockerHubのリポジトリーにプル可能  
+	```sh
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
+	```
+
 
 ### 4:46:10 Automating with watchtower 
 
+✅ 受講完了: 1回  
+
+- `watchtower`を利用してDockerHubのイメージを用いた自動更新を行う(デプロイ環境でdocker login が必要)  
+	```sh
+	docker run -d --name watchtower -e WATCHTOWER_TRACE=true -e WATCHTOWER_DEBUG=true -e WATCHTOWER_POLL_INTERVAL=50 -v /var/run/docker.sock:/var/run/docker.sock 'containrrr/watchtower:latest' app_node-app_1
+	```
+
 
 ### 4:56:06 Why we need an orchestrator
+
+✅ 受講完了: 1回  
 
 
 ### 5:03:32 Docker Swarm
