@@ -21,8 +21,3 @@
 
 [Docker超入門講座 合併版 | ゼロから実践する4時間のフルコース](./KY_Docker_Youtube/)  
 
-
-## DSG Docker for Machine Lerning
-
-[Build and Run a Docker Container for your Machine Learning Model (Step by Step)](./DSG_Docker_ML/)  
-
